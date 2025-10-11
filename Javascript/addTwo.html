@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add two Number </title>
+    <script>
+      function addTwonumber(){
+        
+        
+        var n1=parseInt(document.getElementById('num1').value);
+        var n2=parseInt(document.getElementById('num2').value);
+
+        var result=n1 + n2 ;
+        // document.getElementById('mydiv').innerHTML=result;
+         document.getElementById('result').value=result;
+
+      }
+
+      function  subTwonumber(){
+        var n1=parseInt(document.getElementById('num1').value);
+        var n2=parseInt(document.getElementById('num2').value);
+
+        var result=n1 - n2 ;
+        // document.getElementById('mydiv').innerHTML=result;
+         document.getElementById('result').value=result;
+
+      }
+
+     
+    </script>
+</head>
+<body>
+    <form action="" >
+        <label for="num1">number1 : </label>
+        <input type="text" name="num1" id="num1" >
+        <!-- <span></span> -->
+        </br>
+        <label for="num2">number2 : </label>
+        <input type="text" name="num2" id="num2"  >
+        </br>
+
+        <label for=""> result : </label>
+        <input type="text" name="result" id="result" readonly >
+
+        </br>
+
+        <button type="button"  name="btn" id="add" value="add" onclick=addTwonumber()>Addition</button>
+        <button type="button" name="btn" id="sub" value="sub" onclick=subTwonumber()>Substraction </button>
+
+        
+    </form>
+
+    <div id="mydiv">
+
+    </div>
+</body>
+</html>

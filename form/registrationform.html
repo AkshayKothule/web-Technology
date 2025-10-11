@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration  from </title>
+</head>
+<body>
+    <form action=""  onsubmit="return validateForm()">
+        <table>
+            <tr>
+               <td id="nm"> <label for=""> Name</label></td> 
+               <td>
+                 <input type="text" name="nm" id="nm" autofocus placeholder="Enter a name" >
+                 
+
+               </td>
+               <td >
+                 
+                 </td>
+            </tr>
+             <tr>
+               <td id="mb"> Mobile :</td> 
+               <td>
+                 <input type="text" name="mb" id="mb" placeholder="Enter a mobile number ">
+
+               </td>
+            </tr>
+        
+            
+            <tr>
+                <td><label for=""> Adress :</label></td>
+                <td>
+                   
+                    <textarea name="address" id="address" placeholder="Enter a adress" rows="6" cols="20" >
+                    
+                   </textarea> 
+                </td>
+
+            </tr>
+            
+               <tr>
+                <td><label>Gender</label></td>
+                <td>
+                    <input type="radio" name="gender" id="male" value="male"/>
+                    <label for="male" >Male</label>
+
+                  <input type="radio" name="gender" id="female" value="female" />
+                  <label for="female" >Female</label>  
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Degree :
+                </td>
+                <td>
+                    <input type="radio" name="degree" id="BE" value="BE" checked>
+                    <label for="" >BE</label>
+                    <input type="radio" name="degree" id="BTech" value="BTech">
+                    <label for="">BTech</label>
+
+                    <input type="radio" name="degree" id="PHD" value="PHD">
+                    <label for="">PHD</label>
+                </td>
+            </tr>
+            <tr>
+                <td> Skill :</td>
+                <td >
+                   
+                    <input type="checkbox" name="skill" id="java">
+                     <label for="">Java</label>
+                   
+                    <input type="checkbox" name="skill" id="c++">
+                     <label for="">c++</label>
+                    
+                    <input type="checkbox" name="skill" id="net">
+                    <label for="">.net</label> </br>
+                   
+                    
+                    <input type="checkbox" name="skill" id="python">
+                    <label for="">python</label>
+                    
+                    <input type="checkbox" name="skill" id="Linux">
+                    <label for="">Linux</label>
+                </td>
+            </tr>
+            <tr>
+                <td>City : </td>
+                <td>
+                  <select name="city" id="city">
+                    <option value="test" id="test" name="city">---select-----</option>
+                    <option value="pune" name="city"  id="pune">Pune</option>
+                    <option value="mumbai" >Mumbai</option>
+                    <option value="chennai">Chennai</option>
+                    <option value="Beed">Beed</option>
+                  </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td><label for="">Choose File : </label></td>
+                <td>
+                    
+                    <input type="file" name="file" id="file">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <button type="submit" name="btn" id="register"> Registration</button>
+                    &nbsp &nbsp  &nbsp &nbsp;
+                    <button type="reset" name="cancle" id="cancle"> cancle</button>
+                </td>
+                <td></td>
+            </tr>
+            
+           
+        </table>
+    </form>
+
+
+</body>
+</html>
