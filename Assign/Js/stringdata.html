@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String Opertion </title>
+    <script>
+      function Stringopertion(event){
+        if(event) event.preventDefault();
+        var str1=document.getElementById("str").value;
+        // var str2=document.getElementById("res").value;
+          var result = "";
+
+      // get selected operation
+      var radios = document.getElementsByName("str5");
+      var op = "";
+      for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+          op = radios[i].value;
+          break;
+        }
+      }
+       
+        switch(op){
+            case "substring" :
+                result=str1.substring(str2);
+                break;
+            case "toUppercase" :
+                result=str1.toUpperCase();
+                break;
+            case "toLowercase" :
+                result=str1.toLowerCase();
+
+                break;
+            case "trim" :
+                result=str1.trim();
+                break;    
+
+        }
+        console.log(result);
+        document.getElementById("mydiv").innerHTML=result;
+        document.getElementById("res1").value=result;
+        
+
+      }
+    </script>
+</head>
+<body>
+    <form  onsubmit="return Stringopertion(event)">
+         Enter a String : <input type="text" name="str" id="str" ><br>
+        <!-- Enter a SubString :<input type="text" name="str1" id="str1" ><br> -->
+        replace with String : <input type="text" name="res" id="res1" readonly ><br>
+       
+       
+        <input type="radio" id="rd" name="str5" value="substring">
+        <label for="rd">Search substring in main</label>
+         <input type="radio" id="uppercase" name="str5" value="toUppercase">
+         <label for="uppercase">ToUpperCase</label>
+         <input type="radio" id="lowercase" name="str5" value="toLowercase">
+         <label for="lowercase">ToLowerCase</label>
+          <input type="radio" id="strim" name="str5" value="trim">
+          <label for="strim">Trim spces</label>
+         <input type="radio" id="concat" name="str5" value="concat">
+         <label for="concat">Concate</label>
+
+      <br>
+       
+
+    <button type="submit" name="submit"> Submit</button>
+
+    </form>
+   
+    <div id="mydiv">
+
+    </div>
+
+</body>
+</html>
