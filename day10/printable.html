@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moduel Demo</title>
+    <script
+  src="https://code.jquery.com/jquery-2.2.4.js"
+  integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+  crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function(){
+        console.log("inside a ready function");
+        $('#btn').click(function(){
+
+          console.log("Inside click function");
+
+           var n1= parseInt($('#num').val());
+           console.log(n1);
+           $('#mydiv').html(n1);
+           
+
+        })
+    });
+  </script>
+</head>
+<body>
+    <form action="">
+        <label for="num">Enter a Number</label>
+        <input type="number" id="num" name="num" value="num"><br/>
+        <button type="button" id="btn" name="btn">Get Number</button>
+    </form>
+    <div id="mydiv">
+
+    </div>
+    
+</body>
+</html>

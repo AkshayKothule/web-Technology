@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax Demo</title>
+     <script
+  src="https://code.jquery.com/jquery-2.2.4.js"
+  integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+  crossorigin="anonymous"></script>
+
+  <script>
+
+    function displayData(arr){
+        var str="";
+        str +="<table>"
+
+            for(var v of arr){
+                str1 +=`<tr><td>${v.id}</td><td>${v.title}</td><td>${v.body}</td><td>${v.userId}</td> </tr>`
+
+            }
+            str += str1;
+        str +="</table>";
+        $('#mydiv').html(str);
+
+
+    }
+    $(document).ready(function(){
+        $('#btn').click(function(){
+            $.ajax({
+                url :"https://jsonplaceholder.typicode.com/posts" ,
+                method :"GET" ,
+                success : function(result , status , xhr){
+                    
+                    displayData(result);
+
+                }
+            }
+
+            )
+
+        })
+    })
+  </script>
+</head>
+<body>
+   
+    <button type="button" id="btn" name="btn">Get data</button>
+    <div id="mydiv">
+
+    </div>
+
+
+</body>
+</html>

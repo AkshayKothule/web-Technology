@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+       <script
+  src="https://code.jquery.com/jquery-2.2.4.js"
+  integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+  crossorigin="anonymous"></script>
+    
+    <script>
+        const displayData=(result)=>{
+            var str="";
+            str+="Id : "+result.id+"<br/>"
+            str+="userId : "+result.userId+"<br/>"
+            str+="title : "+result.title+"<br/>"
+            str+="body : "+result.body+"<br/>"
+            $('#mydiv2').html(str);
+        }
+        const getById=()=>{
+             var val=$('#uid').val();
+             $.ajax({
+                url:"https://jsonplaceholder.typicode.com/posts/"+val,
+                type:"GET",
+                success:function(result,status,xhr){
+                    displayData(result);
+                },
+                error:function(error){
+                    console.log(error)
+                }
+             })
+        }
+        const displaydropdown=(arr)=>{
+               var str='<select id="uid">'
+                for(var v of arr){
+                    str+=`<option value="${v.id}">${v.id}</option>`
+                }
+                str+="</select>"
+                $('#mydiv1').html(str);
+                $('#uid').change(function(){
+                    getById();
+                })
+        }
+        $(document).ready(function(){
+            $('#getdata').click(function(){
+                $.ajax({
+                    url:"https://jsonplaceholder.typicode.com/posts",
+                    type:"GET",
+                    success:function(result,status,XHR){
+                        //if(status===200){
+                            console.log(result);
+                            displaydropdown(result);
+                        //}
+                    },
+                    error:function(error){
+                        console.log(error)
+                    },
+                    //data:{}
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+    <button type="button" name="getdata" id="getdata">Get data</button>
+    <div id="mydiv1">
+
+    </div>
+    <div id="mydiv2">
+
+    </div>
+</body>
+</html>
