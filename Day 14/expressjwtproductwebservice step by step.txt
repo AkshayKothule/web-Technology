@@ -1,0 +1,304 @@
+1.	Create a folder by expressjwtproductwebservice
+2.	Create following folders in the expressjwtproductwebservice
+a.	databseconfig
+b.	Controller
+c.	Router
+d.	Middleware
+3.	Create package.json file in expressjwtproductwebservice folder, open command prompt 
+E:\nodedemos\...\ expressjwtproductwebservice>npm init -y
+
+7. create loginroutes.js file in router folder
+
+const express=require("express");
+const router=express.Router();
+const lcontroller=require("../controller/loginController")
+
+
+router.post("/loginuser",lcontroller.validateuser)
+module.exports=router;
+
+8. add loginController.js in controller folder, add validateuser
+function in the file
+
+const connection=require("../databaseconfig/dbconnection")
+const {generateToken}=require("../middleware/jwttokendetails")
+
+exports.validateuser=(req,resp)=>{
+//retrieve data that comes through request body
+//it include email and password
+    const {email,password}=req.body
+	//check whether user is valid
+    connection.query("select * from myusers where email=?",[email],(err,result)=>{
+        if(err){
+            resp.status(500).json({message:"Invalid credentials"})
+        }else{
+		    //select staement always return array of data, so result is a array
+			//hence to retrieve 1 st object we use result[0]
+            const user=result[0];
+			
+            if(user.password===password){
+                //pass only required information
+            const token=generateToken({id:user.uid,uname:user.uname,email:user.email,role:user.role})
+            //const token=generateToken(user)
+               //resp.json({token:token})
+               resp.json({token})
+            }else{
+                resp.status(500).json({message:"invalid credential"})
+            }
+        }
+    })
+}
+
+9. create dbconnection.js file in databseconfig folder
+and add database connection code in it
+
+const mysql=require('mysql2')
+
+//created a connection configuration
+const db=mysql.createConnection({
+    host:'localhost',
+    user:'root',
+    password:'root123',
+    database:"expressdb"
+})
+
+db.connect((err)=>{
+    if(err){
+        console.log(err);
+    }else{
+        console.log("connection done")
+    }
+})
+
+module.exports=db;
+
+10. add jwttokendetails.js file in middleware folder
+and add generateToken function to generate JWT token
+
+const jwt=require("jsonwebtoken")
+const JWT_SECRET="mysecretkey"
+
+exports.generateToken=(user)=>{
+    // Include minimal info in the token payload
+  const payload = { id: user.uid, uname: user.uname, email:user.email ,role:user.role};
+    //create a token
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: 200000 });
+}
+
+To test the code
+1. open postman
+2. send a post request
+url: http://localhost:3333/login/loginuser
+body 
+{
+"email":"user1@gmail.com",
+"password":"user1pass"
+}
+Response should be JWT token, copy the token and keep it somewhere for later use
+
+11. Now we will add product CRUD urls
+get---> /product/products
+get--->/product/products/:id
+POST---->/product/products/:id
+PUT--->/product/products/:id
+DELETE--->/product/products/:id
+
+12. to add these urls, add productroutes.js in router folder
+
+const express=require("express")
+const router=express.Router();
+const productcontroller=require("../controller/productController")
+const {authenticateJWT}=require("../middleware/jwttokendetails")
+
+//read all products
+router.get("/products",authenticateJWT,productcontroller.getAllProducts)
+
+router.get("/products/:id",authenticateJWT,productcontroller.getById)
+
+module.exports=router;
+
+
+13. add autheticateJWT function in jwttokendetails.js in middleware folder
+
+exports.authenticateJWT=async (req, res, next)=> {
+    console.log("validated jwt token")
+    //retrieve the toke from autherization header
+  const auth = req.headers.authorization; // {authorization:"Bearer sldjg345sdkfjskl"}
+  if (!auth || !auth.startsWith('Bearer ')) {
+    res.status(401).json({ message: 'Missing token' });
+  }else{
+      const token = auth.split(' ')[1];
+      try {
+            const payload = jwt.verify(token, JWT_SECRET);
+            // attach to request
+            req.user = payload; // {id, uname, email,role}
+            console.log(req.user)
+            next();
+        } catch (err) {
+    return res.status(401).json({ message: 'Invalid/Expired token' });
+  }
+  }
+  
+14. add productController.js file in controller folder and add
+getAllProduct function in it
+exports.getAllProducts=(req,resp)=>{
+    //if the token is valid, ideally we check user.role
+    if(req.user.role==='admin' || req.user.role==='user'){
+            connection.query("select * from myproducts",(err,result,field)=>{
+                if(err){
+                    resp.status(404).json({message:"error occured" +JSON.stringify(err)});
+                }else{
+                    console.log(result);
+                    resp.json({data:result})
+                }
+            })
+    }else{
+        resp.status(500).json({message:"invalid token"})
+    }
+}
+
+15. add getById function in productController.js file 
+in controller folder
+//display data in the form for updation
+exports.getById=(req,resp)=>{
+    if(req.user.role==="admin" || req.user.role==="user"){
+    connection.query("select * from myproducts where pid=?",[req.params.id],(err,result,fields)=>{
+        if(err){
+            resp.status(500).json({message:"Product not found"})
+        }else{
+           console.log(result);
+
+           //result[0].mfgdate=result[0].mfgdate.toISOString().split('T')[0];
+            resp.json({data:result[0]})
+        }
+
+    })
+}else{
+    resp.status(500).json({"message":"invalid token"})
+}
+}
+
+to test these requests use postman
+url---> /product/products
+header ---> Autherization : Bearer <jwttoken>
+method --->GET
+response---> array of json object with all products
+
+url---> /product/products/11    (/product/products/:id)
+header ---> Autherization : Bearer <jwttoken>
+method --->GET
+response---> one json object with product with id=11
+
+
+16. Add POST and PUT requests in productroutes.js in router folder
+
+router.post("/products/:id",authenticateJWT,productcontroller.insertProduct)
+
+router.put("/products/:id",authenticateJWT,productcontroller.updateProduct) 
+
+17. add insertProduct function in productController.js file in 
+controller folder
+//insert product in the table
+exports.insertProduct=(req,resp)=>{
+    if(req.user.role==="admin"){
+        const {pid,pname,qty,price,mfgdate}=req.body
+        connection.query("insert into myproducts values(?,?,?,?,?)",[pid,pname,qty,price,mfgdate],(err,result,field)=>{
+            if(err){
+                resp.status(500).json({message:"data not inserted" +JSON.stringify(err)});
+            }else{
+                console.log("data added"+result)
+                resp.json({data:"data inserted"})
+            }
+        })
+        }else{
+            resp.status(500).json({message:"unautized access pls relogin" })
+        }
+}
+
+18. add updateProduct function in productController.js file in 
+controller folder
+
+//update product in the table
+exports.updateProduct=(req,resp)=>{
+    if(req.user.role==="admin"){
+    const {pid,pname,qty,price,mfgdate}=req.body
+    console.log("mfgdate"+mfgdate)
+    connection.query("update myproducts set pname=?,qty=?,price=?,mfgdate=? where pid=?",[pname,qty,price,mfgdate,pid],(err,result,fields)=>{
+        if(err){
+            console.log(err)
+            resp.status(500).json({message:"Product not updated"})
+        }else{
+            console.log(result)
+            resp.json({data:"data updated successfully"})
+        }
+    } )}else{
+        resp.status(500).json({message:"invalid token"})
+    }
+}
+
+to test post and put reuests
+
+url--->/product/products/100 
+method---->POST
+header----> Autherization: Bearer <JWTToken>
+body---> any new product
+{
+  "pid":100,
+  "pname":"notebook",
+  "qty":345,
+  "price":567,
+  "mfgdate":"2024-11-11"
+  
+}
+response: data inserted
+
+url: /product/products/100
+method---->PUT
+header----> Autherization: Bearer <JWTToken>
+body--->  any existing product with new values
+{
+  "pid":100,
+  "pname":"notebook",
+  "qty":345,
+  "price":567,
+  "mfgdate":"2024-11-11"
+  
+}
+response: data inserted
+
+19. to add delete method
+add following code in productroutes.js file in router folder
+router.delete("/products/:id",authenticateJWT,productcontroller.deleteProduct)
+
+module.exports=router;
+
+20. add deleteProduct function in productController.js file in 
+controller folder
+//delete product from table
+exports.deleteProduct=(req,resp)=>{
+    if(req.user.role==="admin"){
+    connection.query("delete from myproducts where pid=?",[req.params.id],(err,result)=>{
+        if(err){
+            resp.status(500).json({message:JSON.stringify(err)})
+        }else{
+            resp.json({message:"deleted successfully"})
+        }
+    })
+   }else{
+    resp.status(500).json({message:"invalid token"})
+   }
+}
+
+to test it
+url--->/product/products/11
+body: None
+header--->Autherization:"bearer <jwttoken>
+method: delete
+response: deleted successfully
+
+
+
+
+
+
+
