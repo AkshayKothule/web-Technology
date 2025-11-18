@@ -6,7 +6,7 @@ const db=mysql.createConnection({
     host:'localhost',
     user:'root',
     password:'root*123',
-    database:"expressdb"
+    database:"employee"
 })
 
 db.connect((err)=>{
@@ -19,3 +19,4 @@ db.connect((err)=>{
 
 module.exports=db;
 
+   
