@@ -5,6 +5,11 @@ exports.validateUser=(req , resp)=>{
 
     //deconstruct data
     const {email , password}=req.body;
+    console.log(email+""+password);
+    if (!email || !password) {
+        return resp.status(400).json({ msg: "Email or password missing" });
+    }
+
     
     //find user by email from database
     connection.query("select * from employees where email=?" , [email],async(err , result , filed)=>{
