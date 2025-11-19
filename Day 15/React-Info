@@ -1,0 +1,26 @@
+
+Mounting :
+- Your component is shown on the screen first (render)
+- After that, React runs this effect once
+useEffect(() => {
+  console.log("Mounted");
+}, []);
+
+Updating :
+-It runs every time the value inside dependency array changes.
+useEffect(() => {
+  console.log("Updated");
+}, [stateOrProps]);
+
+Unmounting:
+useEffect(() => {
+  return () => {
+    console.log("Unmounted");
+  }
+}, []);
+
+| useEffect Type                       | Runs           | When?                                    |
+| ------------------------------------ | -------------- | ---------------------------------------- |
+| `useEffect(..., [])`                 | Only once      | After first render (Mount)               |
+| `useEffect(..., [value])`            | Multiple times | After every render where `value` changes |
+| `useEffect(..., []) return () => {}` | Once (cleanup) | Before component unmount                 |
