@@ -59,9 +59,10 @@ export default function ProductFormComponent(props) {
     });
 
     const handleChange = (event) => {
+        var {name , value}=event.target;
         setForm({
             ...form,
-            [event.target.name]: event.target.value
+            [name]:value
         });
     };
 
