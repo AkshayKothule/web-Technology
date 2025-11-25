@@ -19,7 +19,7 @@ function App() {
   }, [product]);
 
   //add product 
-  const addProduct=(form)=>{
+  const addProduct=()=>{
     // setProduct([...product ,form]);
    setProduct([...product, form]);
 
