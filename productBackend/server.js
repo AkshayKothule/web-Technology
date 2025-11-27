@@ -3,9 +3,10 @@
 const express=require("express");
 const productrouter=require("./router/productRouter")
 const app=express();
-
+const cors=require("cors")
 //middleware
 app.use(express.json());
+app.use(cors()); //enabale all routes
 app.use("/" , (req , resp , next)=>{
     console.log(req.url+"----------"+req.method);
     console.log("inside a middlewre ");

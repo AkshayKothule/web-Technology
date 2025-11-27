@@ -14,7 +14,7 @@ exports.allprodcts=(req , resp)=>{
 
 exports.addnewproduct = (req, resp) => {
     const { pid, pname, price, mfg, exp } = req.body;
-
+console.log(req.body);
     const sql = "INSERT INTO product VALUES (?, ?, ?, ?, ?)";
 
     connection.query(sql, [pid, pname, price, mfg, exp], (error, result) => {
