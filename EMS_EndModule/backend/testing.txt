@@ -1,0 +1,14 @@
+http://localhost:3333/add
+
+{
+    "emp_name":"omkar",
+    "joining_date":"2025-10-23",
+    "designation":"Java developer"
+}
+
+http://localhost:3333/employees
+
+http://localhost:3333/delete/:id
+
+
+

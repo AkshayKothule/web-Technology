@@ -1,0 +1,25 @@
+mysql> create database employee_db;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> create table employees(
+    -> emp_id int primary key auto_increment,
+    -> emp_name varchar(20),
+    -> joining_date date,
+    -> designation);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 5
+mysql> create table employees(
+    -> emp_id int primary key auto_increment,
+    -> emp_name varchar(20),
+    -> joining_date date,
+    -> designation varchar(20));
+ERROR 1046 (3D000): No database selected
+mysql> use employee_db
+Database changed
+mysql> create table employees(
+    -> emp_id int primary key auto_increment,
+    -> emp_name varchar(20),
+    -> joining_date date,
+    -> designation varchar(20));
+Query OK, 0 rows affected (0.04 sec)
+
+
