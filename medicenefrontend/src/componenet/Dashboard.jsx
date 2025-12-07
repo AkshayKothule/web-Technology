@@ -33,7 +33,12 @@ function Dashboard() {
     }
 
     const AddMedicene=()=>{
-
+    if(form.Qty < 0 || form.Price < 0 || /[0-9]/.test(form.mediceneName)){
+      alert("Enter a valid  data");
+      return ;
+      
+    }
+     
       axios.post("http://localhost:3333/addmedicene" ,form)
       .then((result)=>{
         console.log(result);
@@ -116,13 +121,49 @@ function Dashboard() {
     <form action="">
       mediceneName : <input type='text'  name='mediceneName' value={form.mediceneName} onChange={handler}/> <br/>
       
-      mediceneType :
+      {/* mediceneType :
       <select name="mediceneType" id="mediceneType" value={form.mediceneType} onChange={handler}>
         <option value="">----select type-----</option>
         <option value="Tablet">Tablet</option>
         <option value="Syrup">Syrup</option>
         <option value="PanKiller">PanKiller</option>
-      </select> <br/>
+      </select> <br/> */}
+
+       mediceneType :  
+        <label>
+          <input
+            type="radio"
+            name="mediceneType"
+            value="Tablet"
+            checked={form.mediceneType === "Tablet"}
+            onChange={handler}
+          />
+          Tablet
+        </label>
+ss
+        <label>
+          <input
+            type="radio"
+            name="mediceneType"
+            value="Syrup"
+            checked={form.mediceneType === "Syrup"}
+            onChange={handler}
+          />
+          Syrup
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            name="mediceneType"
+            value="PanKiller"
+            checked={form.mediceneType === "PanKiller"}
+            onChange={handler}
+          />
+          PanKiller
+        </label>
+        <br/>
+      
       Qty : <input type='text'  name='Qty' value={form.Qty} onChange={handler}/> <br/>
       price : <input type='text'  name='Price' value={form.Price} onChange={handler}/> <br/>
       <button type='button' onClick={AddMedicene}>Add Medicene</button>
@@ -135,12 +176,14 @@ function Dashboard() {
       mediceneName : <input type='text'  name='mediceneName' value={updatfrom.mediceneName} onChange={handlerupdate}/> <br/>
       
       mediceneType :
-      <select name="mediceneType" id="mediceneType" value={updatfrom.mediceneType} onChange={handlerupdate}>
-        <option value="">----select type-----</option>
-        <option value="Tablet">Tablet</option>
-        <option value="Syrup">Syrup</option>
-        <option value="PanKiller">PanKiller</option>
-      </select> <br/>
+      <input type="radio"  name="mediceneType" value="tablet"
+      checked={updatfrom.mediceneType=== "tablet"}
+      onChange={handlerupdate} /> Tablet
+      <input type="radio" name="mediceneType" value="syrup" 
+      checked={updatfrom.mediceneType== "syrup"}
+      onChange={handlerupdate}
+      /> syrup
+      <br/>
       Qty : <input type='text'  name='Qty' value={updatfrom.Qty} onChange={handlerupdate}/> <br/>
       price : <input type='text'  name='Price' value={updatfrom.Price} onChange={handlerupdate}/> <br/>
       <button type='button' onClick={updateMedicene}>updateMedicene</button>
@@ -161,6 +204,7 @@ function Dashboard() {
             <th>Qty</th>
             <th>Price</th>
             <th>Action</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -174,12 +218,14 @@ function Dashboard() {
                     <td>
                       <button type='button' onClick={()=>{delteteHander(mid.mediceneName)}}>Delete</button>
                     </td>
-                    <td type='button' onClick={()=>{updateM(mid.mediceneName)}}>
-                      update
+                    <td >
+                      <button type='button'onClick={()=>{updateM(mid.mediceneName)}}>Update</button>
+                    
                     </td>
                 </tr>
 
             ))
+
 
         }
         </tbody>

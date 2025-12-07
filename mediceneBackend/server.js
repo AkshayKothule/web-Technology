@@ -34,7 +34,7 @@ app.get("/getmedicene" , (req , resp)=>{
             return;
         }
        
-        resp.status(200).json({data : result});
+         resp.status(200).json({data : result});
 
     })
 //post

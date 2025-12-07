@@ -6,7 +6,7 @@ const mysql=require('mysql2');
 const  app=express();
 
 app.use(cors())
-app.use(bodyparser.json());
+app.use(express.json());
 
 //db connection 
 const dbconnection=mysql.createConnection({
@@ -94,6 +94,37 @@ app.get("/player" , (req , resp)=>{
   
     
 })
+
+// app.put("/player/:name" , (req , resp)=>{
+//     console.log(req.body);
+//    const pName=req.params.name;
+//      const {matchesplayed , totalruns ,fiftes , hundreds ,teamName  }=req.body
+
+//      const sql="update player set matchesplayed=? , totalruns=? ,fiftes=? ,hundreds=? ,teamName=? where name=?";
+//      dbconnection.query(sql , [matchesplayed ,totalruns , fiftes ,hundreds ,teamName , pName] ,(error , result)=>{
+//         if(error){
+//             resp.json({message :"Not Upadted "});
+//         }
+//         resp.json({message :"data Updated Sucessfully !!!!"});
+//      })
+// })
+app.put("/player/:name", (req, resp) => {
+    console.log(req.body);
+
+    const pName = req.params.name;
+    const { matchesplayed, totalruns, fiftes, hundreds, teamName } = req.body;
+
+    const sql = "update player set matchesplayed=?, totalruns=?, fiftes=?, hundreds=?, teamName=? where name=?";
+
+    dbconnection.query(sql, [matchesplayed, totalruns, fiftes, hundreds, teamName, pName], (error, result) => {
+        if (error) {
+            return resp.json({ message: "Not Updated", error });
+        }
+
+        return resp.json({ message: "Data Updated Successfully!" });
+    });
+});
+
 app.listen(3333 , ()=>{
     console.log('server running on port number 3333');
 })
